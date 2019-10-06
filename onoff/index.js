@@ -4,6 +4,7 @@ const RGB = require("./rgb.js");
 const app = Express();
 const LED = {"red":RGB.red, "yellow": RGB.yellow, "green": RGB.green}
 
+app.use(cors())
 app.set('view engine', 'ejs');
 
 app.get("/", function(req, res) {
