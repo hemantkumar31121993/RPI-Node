@@ -1,0 +1,19 @@
+{
+  "name": "check",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "nodemon": "^1.19.3",
+    "onoff": "^5.0.0",
+    "pigpio": "^2.0.1",
+    "rpi-gpio": "^2.1.4"
+  }
+}

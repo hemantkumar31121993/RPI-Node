@@ -1,0 +1,35 @@
+<!DOCTYPE html5>
+<html>
+	<head><title>RPI</title></head>
+	<body>
+		Welcome to RPI
+		<br>
+		<button onclick="poll(this,'status','red')">Check Status Red</button>
+		<br>
+		<button onclick="poll(this,'status','yellow')">Check Status Yellow</button>
+		<br>
+		<button onclick="poll(this,'status','green')">Check Status Green</button>
+		<br>
+		<button onclick="poll(this,'blink','red')">Blink Red</button>
+		<br>
+		<button onclick="poll(this,'blink','yellow')">Blink Yellow</button>
+		<br>
+		<button onclick="poll(this,'blink','green')">Blink Green</button>
+	</body>
+	<script>
+		function poll(obj,path,led) {
+			let req = new XMLHttpRequest();
+			req.onreadystatechange = function() {
+				if(req.readyState !== 4)
+					return;
+				if (req.status == 200) {
+					obj.style = `background:${led}`;
+				} else {
+					alert(req.statusText);
+				}
+			}
+			req.open('GET', `/${path}/${led}`, true);
+			req.send();
+		}
+	</script>
+</html>
