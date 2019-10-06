@@ -1,5 +1,6 @@
 const Express = require("express");
 const RGB = require("./rgb.js");
+const cors = require('cors')
 
 const app = Express();
 const LED = {"red":RGB.red, "yellow": RGB.yellow, "green": RGB.green}
