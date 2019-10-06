@@ -1,6 +1,6 @@
 import React from 'react';
 
-class LEDStatus extends React.Component {
+class LEDBlink extends React.Component {
 	constructor() {
 		super()
 		this.state = {
@@ -12,12 +12,12 @@ class LEDStatus extends React.Component {
 	checkStatus(event) {
 		let led = this.props.led
 		this.setState({received: false, ok: false, error: false})
-		fetch(`http://192.168.0.109:3000/status/${led}`)
+		fetch(`http://192.168.0.109:3000/blink/${led}`)
 		.then( res => {
 			if(res.ok)
 				this.setState({received: true, ok: true, error: false})
 			else
-				this.setState({received: true, ok: false, error: `could not check the status, error:${res.status}`})
+				this.setState({received: true, ok: false, error: `could not blink the led, error:${res.status}`})
 		})
 	}
 
@@ -28,10 +28,10 @@ class LEDStatus extends React.Component {
 		}
 		return(
 			<div>
-				<button onClick={this.checkStatus}>Check LED {this.props.led}</button> {error}
+				<button onClick={this.checkStatus}>Blink LED {this.props.led}</button> {error}
 			</div>
 		)
 	}
 }
 
-export default LEDStatus
+export default LEDBlink
