@@ -2,6 +2,7 @@ var gpio = require("onoff").Gpio
 var red = new gpio(17, 'out')
 var yellow = new gpio(27, 'out')
 var green = new gpio(22, 'out')
+var button = new gpio(21, 'in', 'both')
 
 function statusCheck(led) {
 	led.writeSync(1)
@@ -84,4 +85,12 @@ function run(time) {
 //series(20, 200)
 //series(1000, 200)
 //
+
+button.watch ( function(err, val) {
+	if(err) {
+		throw err;
+	}
+	blink(red, 10, 300, 1000)
+});
+
 module.exports = {red, yellow, green, run, seriesp, glowp, blinkp}
