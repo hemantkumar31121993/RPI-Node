@@ -6,7 +6,7 @@ import LEDBlink from './LED-blink'
 import * as serviceWorker from './serviceWorker';
 
 import {Card} from 'primereact/card'
-import {Panel} from 'primereact/panel';
+// import {Panel} from 'primereact/panel';
 
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';

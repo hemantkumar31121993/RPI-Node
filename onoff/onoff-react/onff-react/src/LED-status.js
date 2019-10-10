@@ -4,6 +4,7 @@ import {Dialog} from 'primereact/dialog';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import Server from './server';
 
 class LEDStatus extends React.Component {
 	constructor() {
@@ -22,7 +23,7 @@ class LEDStatus extends React.Component {
 		let led = this.props.led
 		this.setState({received: false, ok: false, error: false, pending: true})
 		try {
-			fetch(`http://192.168.0.109:3000/status/${led}`)
+			fetch(`${Server.address}:${Server.port}/status/${led}`)
 			.then( res => {
 				if(res.ok)
 					this.setState({received: true, ok: true, error: false, pending: false})
@@ -44,11 +45,12 @@ class LEDStatus extends React.Component {
 		let className = "p-button-secondary"
 		let icon = ""
 		if(!this.state.pending) {
-			if(this.state.received && this.state.ok == true) { 
+			if(this.state.received && this.state.ok === true) { 
 				switch(this.props.led) {
 					case "red": className = "p-button-danger"; break;
 					case "yellow": className = "p-button-warning"; break;
 					case "green": className = "p-button-success"; break;
+					default: break;
 				}
 				icon = "pi pi-check"
 			} else {
