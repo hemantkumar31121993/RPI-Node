@@ -6,13 +6,11 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import Server from './server';
 
-class LEDStatus extends React.Component {
+class LEDBlink extends React.Component {
 	constructor() {
 		super()
 		this.state = {
 			received: false,
-			ok: false,
-			error: false,
 			visible: false,
 			pending: false
 		}
@@ -23,19 +21,21 @@ class LEDStatus extends React.Component {
 		let led = this.props.led
 		this.setState({received: false, ok: false, error: false, pending: true})
 		try {
-			fetch(`${Server.address}:${Server.port}/status/${led}`)
+			let controller = new AbortController();
+			let signal = controller.signal;
+			fetch(`${Server.address}:${Server.port}/blink/${led}`, {signal})
 			.then( res => {
 				if(res.ok)
 					this.setState({received: true, ok: true, error: false, pending: false})
 				else
-					this.setState({received: true, ok: false, error: `could not check the status, error:${res.status}`, visible: true , pending: false})
-				},
-				error => {
-					this.setState({received: true, ok: false, error: `could not check the status, error:${error}`, visible: true, pending: false})
-				})
+					this.setState({received: true, ok: false, error: `could not blink the led, error:${res.status}`, visible: true, pending: false})
+			},
+			rej => {
+				this.setState({received: true, ok: false, error: `action timed out, error:${rej}`, visible: true, pending: false})
+			})
+			setTimeout(_ => {controller.abort()}, 10000)
 		} catch (e) {
-			console.log(e)
-			this.setState({received: false, ok: false, error: `could not check the status, error:${e.message}`, visible: true, pending: false})
+			this.setState({received: true, ok: false, error: `could not blink the led, error:${e.message}`, visible: true, pending: false})
 		}
 	}
 
@@ -61,11 +61,11 @@ class LEDStatus extends React.Component {
 		}
 		return(
 			<span>
-				<Button className={className} style={{marginLeft: "10px"}} onClick={this.checkStatus} icon={icon} label={`Check LED`} />
+				<Button className={className} style={{marginLeft: "10px"}} onClick={this.checkStatus} icon={icon} label={`Blink LED`} />
 				{error}
 			</span>
 		)
 	}
 }
 
-export default LEDStatus
+export default LEDBlink
