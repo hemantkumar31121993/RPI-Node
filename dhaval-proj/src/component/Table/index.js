@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {TableContainer, Table as MTable, TableBody, TableHead, TableRow, TableCell, Paper, TextField} from '@material-ui/core';
 
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
@@ -34,8 +35,8 @@ class Table extends React.Component {
                 <MTable>
                     <TableHead>
                         <TableRow>
-                            {columns && columns.map((column, index) => 
-                                <TableCell onClick={() => column.isSortable && this.handleSort(column.columnKey)} key={index}>
+                            {columns && columns.map(column => 
+                                <TableCell onClick={() => column.isSortable && this.handleSort(column.columnKey)} key={`th-${column.columnKey}`}>
                                     <div style={{display: 'flex'}}>
                                         {column.title || ''}
                                         
@@ -49,16 +50,16 @@ class Table extends React.Component {
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            {columns && columns.map((column, index) => 
-                                <TableCell key={index}><TextField defaultValue={column.title || ''} /></TableCell>
+                            {columns && columns.map((column) => 
+                                <TableCell key={`th-search-${column.columnKey}`}><TextField defaultValue={column.title || ''} /></TableCell>
                             )}
                         </TableRow>
                     </TableBody>
                     <TableBody>
                         {data && data.map( (row, rowIndex) => 
                             <TableRow onClick={() => onRowClick && onRowClick(row)} key={rowIndex}>
-                            {columns.map((column, columnIndex) =>
-                                <TableCell key={columnIndex}>
+                            {columns.map((column) =>
+                                <TableCell key={`tr-${rowIndex}td-${column.columnKey}`}>
                                     {(column.renderer && column.renderer(row)) || (row.get && row.get(column.columnKey)) || row[column.columnKey] }
                                 </TableCell>
                             )}
@@ -71,6 +72,19 @@ class Table extends React.Component {
     }
 }
 
+Table.propTypes = {
+    data: PropTypes.array,
+    onRowClick: PropTypes.func,
+    sortFunction: PropTypes.func,
+}
+
 class Column extends React.Component {};
+
+Column.propTypes = {
+    columnKey: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    renderder: PropTypes.func,
+    isSortable: PropTypes.bool,
+}
 
 export {Table, Column};

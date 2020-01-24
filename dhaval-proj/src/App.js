@@ -105,7 +105,10 @@ class App extends React.Component {
             ))}
           </Grid>
           <Table data={this.data} onRowClick={this.onRowClick} sortFunction={(k,d) => console.log(k,d)}>
-              {this.columns.map((c,i) => <Column {...c} key={i}/>)}
+              <Column columnKey="id" title="ID" isSortable />
+              <Column columnKey="name" title="Name" />
+              <Column columnKey="desc" title="Team" />
+              <Column columnKey="member" title="Member" renderer={(row) => (row.member?<Edit />:<Add />)} />
           </Table>
           {/* <Grid container spacing={2}>
             <Grid item md={6}>
