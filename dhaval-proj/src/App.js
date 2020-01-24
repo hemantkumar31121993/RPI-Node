@@ -1,8 +1,10 @@
 import React from 'react';
 import './App.css';
 import GPIOComponent from './component/GPIOComponent';
+import {Table, Column} from './component/Table';
 import {Grid, Container,Fab, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,Card, CardContent} from '@material-ui/core';
 import Add from '@material-ui/icons/Add'
+import Edit from '@material-ui/icons/Edit'
 
 class App extends React.Component {
 
@@ -57,6 +59,29 @@ class App extends React.Component {
     }
   }
 
+  makeData(id, name, desc, member) {
+    return {id, name, desc, member};
+  }
+
+  onRowClick(row) {
+    console.log(row);
+  }
+
+  data = [
+    this.makeData(1, 'Hemant Kumar', 'Segments Team', true),
+    this.makeData(1, 'Hemant Kumar', 'Segments Team', false),
+    this.makeData(1, 'Hemant Kumar', 'Segments Team', false),
+    this.makeData(1, 'Hemant Kumar', 'Segments Team', true),
+    this.makeData(1, 'Hemant Kumar', 'Segments Team', true),
+  ]
+
+  columns = [
+    {title: 'ID', columnKey:'id', isSortable: true},
+    {title: 'Full Name', columnKey:'name'},
+    {title: 'Team', columnKey: 'desc', isSortable: true},
+    {title: 'Member', columnKey:'member', renderer:(row) => (row.member?<Edit />:<Add />)}
+  ]
+
   render() {
     const {modalOpen, devices} = this.state;
     // console.log(this.state);
@@ -79,6 +104,9 @@ class App extends React.Component {
               </Grid>
             ))}
           </Grid>
+          <Table data={this.data} onRowClick={this.onRowClick} sortFunction={(k,d) => console.log(k,d)}>
+              {this.columns.map((c,i) => <Column {...c} key={i}/>)}
+          </Table>
           {/* <Grid container spacing={2}>
             <Grid item md={6}>
               <GPIOComponent name={'pp'} pin={4}></GPIOComponent>
